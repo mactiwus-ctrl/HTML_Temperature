@@ -1,19 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { PLC_CONFIG, PLC_VARIABLES } from "@/config/plc";
 
 const nodes7 = require("nodes7");
-
-const PLC_CONFIG = {
-  host: "192.168.10.254",   // LOGO! 8.4 IP
-  port: 102,
-  rack: 0,
-  slot: 2,                  // LOGO! uses slot 2
-  timeout: 3000,
-};
-
-// LOGO! VM1 maps to DB1.DBW0 in S7 protocol
-const PLC_VARIABLES = {
-  temperature: "DB1,REAL0", // VM1 as REAL (32-bit float)
-};
 
 function readFromPLC(): Promise<{ temperature: number; timestamp: string }> {
   return new Promise((resolve, reject) => {

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { PLC_CONFIG, PLC_DISPLAY } from "@/config/plc";
 
 interface TempData {
   temperature: number | null;
@@ -26,7 +27,7 @@ export default function Home() {
 
   useEffect(() => {
     fetchTemp();
-    const interval = setInterval(fetchTemp, 2000); // poll every 2s
+    const interval = setInterval(fetchTemp, PLC_DISPLAY.pollIntervalMs);
     return () => clearInterval(interval);
   }, []);
 
@@ -44,7 +45,7 @@ export default function Home() {
     <div style={styles.container}>
       <div style={styles.card}>
         <h1 style={styles.title}>🌡️ PLC Temperature Monitor</h1>
-        <p style={styles.subtitle}>Siemens LOGO! 8.4 — VM1 @ 192.168.10.254</p>
+        <p style={styles.subtitle}>{PLC_DISPLAY.name} — VM1 @ {PLC_CONFIG.host}</p>
 
         <div style={{ ...styles.tempBox, borderColor: tempColor }}>
           {loading ? (
@@ -71,10 +72,10 @@ export default function Home() {
         )}
 
         <div style={styles.info}>
-          <p><strong>PLC:</strong> Siemens LOGO! 8.4</p>
-          <p><strong>IP:</strong> 192.168.10.254</p>
-          <p><strong>Address:</strong> VM1 (DB1,REAL0)</p>
-          <p><strong>Poll:</strong> every 2 seconds</p>
+          <p><strong>PLC:</strong> {PLC_DISPLAY.name}</p>
+          <p><strong>IP:</strong> {PLC_CONFIG.host}</p>
+          <p><strong>Address:</strong> {PLC_DISPLAY.address}</p>
+          <p><strong>Poll:</strong> every {PLC_DISPLAY.pollIntervalMs / 1000} seconds</p>
         </div>
       </div>
     </div>
